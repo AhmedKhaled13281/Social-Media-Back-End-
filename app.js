@@ -1,13 +1,17 @@
 const express = require("express")
 const app = express()
 const AppErrorHandler = require('./Utilities/appErrorHandler')
+const UserRoute = require("./Routes/user.route")
+
 
 // Middleware and routes
 app.use(express.json());
-app.get('/', (req, res) => {
-    console.log("object");
-    res.status(200).json({message : "Cdvf"})
-});
+
+app.use("/user" , UserRoute)
+// app.get('/', (req, res) => {
+//     console.log("object");
+//     res.status(200).json({message : "Cdvf"})
+// });
 
 app.all('*' , (req, res , next) => {
     next(new AppErrorHandler(`This Route ${req.url} does not exist` , 404))
