@@ -1,6 +1,7 @@
 const UserModel = require("../Models/user.model");
 const jwt = require("jsonwebtoken");
 const AppErrorHandler = require("../Utilities/appErrorHandler");
+const catchAsync = require("../Utilities/catchAsync");
 
 exports.createToken = (data, res) => {
   const token = jwt.sign({ data }, process.env.JWT_SECERT, { expiresIn: "1h" });
@@ -35,3 +36,32 @@ exports.userSignIn = async (req) => {
 
   return { user, passwordMatch };
 };
+
+exports.isAuthorized = async (token, next) => {
+  try {
+    const verify = jwt.verify(token, process.env.JWT_SECERT, {
+      complete: true,
+    });
+
+    const { data, exp } = jwt.decode(token);
+
+    let isExpired = Date.now() > exp * 1000;
+
+    if (isExpired) {
+      throw new Error("This token is Expired!, Please try to login again")
+    }
+
+    const user = await UserModel.findOne({ _id: data });
+
+    if (!user) {
+      throw new Error("User not found!")
+    }
+
+    return user;
+  } catch (error) {
+    return next(new AppErrorHandler(error.message, 404));
+  }
+};
+
+
+exports.updateUserProfile = async (req) => {};
