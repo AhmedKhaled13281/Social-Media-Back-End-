@@ -71,15 +71,15 @@ exports.forgetPassword = async (email) => {
     throw new AppErrorHandler("This email does not existed!", 404);
   }
 
-  const sending = await transporter.sendMail({
-    from: '"Maddison Foo Koch 👻" <ahmedrashad13281@gmail.com>', // sender address
-    to: "ahmedrashad13281@yahoo.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
-  });
+  // const sending = await transporter.sendMail({
+  //   from: '"Maddison Foo Koch 👻" <ahmedrashad13281@gmail.com>', // sender address
+  //   to: "ahmedrashad13281@yahoo.com", // list of receivers
+  //   subject: "Hello ✔", // Subject line
+  //   text: "Hello world?", // plain text body
+  //   html: "<b>Hello world?</b>", // html body
+  // });
 
-  console.log(sending)
+  // console.log(sending)
 
   return userEmail;
 };
