@@ -20,8 +20,8 @@ const transporter = nodemailer.createTransport({
     host : 'smtp.sendgrid.net',
     port : 587,
     auth : {
-        user : 'apikey',
-        pass : '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'
+        user : process.env.SENDGRID_USER,
+        pass : process.env.SENDGRID_PASS
     }
 });
 
