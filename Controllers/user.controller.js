@@ -37,6 +37,13 @@ exports.isAuthorized = async (req , res , next) => {
 }
 
 // TODO
-exports.updateUserProfile = async (req , res , next) => {
-    res.status(200).json({ user : req.user , message : "Hello"})
+exports.forgetPassword = async (req , res , next) => {
+  // First : Take the email and Check if it existed already or NOT
+  const {email} = req.body
+  const user = await userService.forgetPassword(email)
+
+  // Second : If Existed, Then send an email to this user
+
+  // Third : Redirect the user to Reset Password
+    res.status(200).json({ user , message : "Hello"})
 }

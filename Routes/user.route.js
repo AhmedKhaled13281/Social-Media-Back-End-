@@ -8,10 +8,9 @@ router.route("/signup").post(catchAsync(userController.userSignUp));
 router.route("/signin").post(catchAsync(userController.userSignIn));
 
 router
-  .route("/updateProfile")
-  .patch(
-    userController.isAuthorized,
-    catchAsync(userController.updateUserProfile)
+  .route("/forgetPassword")
+  .post(
+    catchAsync(userController.forgetPassword)
   );
 
 module.exports = router;

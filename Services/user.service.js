@@ -2,6 +2,7 @@ const UserModel = require("../Models/user.model");
 const jwt = require("jsonwebtoken");
 const AppErrorHandler = require("../Utilities/appErrorHandler");
 const catchAsync = require("../Utilities/catchAsync");
+const transporter = require("../Utilities/emailHandler");
 
 exports.createToken = (data, res) => {
   const token = jwt.sign({ data }, process.env.JWT_SECERT, { expiresIn: "1h" });
@@ -48,13 +49,13 @@ exports.isAuthorized = async (token, next) => {
     let isExpired = Date.now() > exp * 1000;
 
     if (isExpired) {
-      throw new Error("This token is Expired!, Please try to login again")
+      throw new Error("This token is Expired!, Please try to login again");
     }
 
     const user = await UserModel.findOne({ _id: data });
 
     if (!user) {
-      throw new Error("User not found!")
+      throw new Error("User not found!");
     }
 
     return user;
@@ -63,5 +64,22 @@ exports.isAuthorized = async (token, next) => {
   }
 };
 
+exports.forgetPassword = async (email) => {
+  const userEmail = await UserModel.findOne({ email });
 
-exports.updateUserProfile = async (req) => {};
+  if (!userEmail) {
+    throw new AppErrorHandler("This email does not existed!", 404);
+  }
+
+  const sending = await transporter.sendMail({
+    from: '"Maddison Foo Koch 👻" <ahmedrashad13281@gmail.com>', // sender address
+    to: "ahmedrashad13281@yahoo.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  });
+
+  console.log(sending)
+
+  return userEmail;
+};
