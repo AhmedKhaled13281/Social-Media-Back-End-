@@ -1,28 +1,22 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    // host: 'smtp.ethereal.email',
-    // port: 587,
-    // auth: {
-    //     user: 'antonette54@ethereal.email',
-    //     pass: 'BmbY2SYExP3pHqmY1N'
-    // }
+  // Send Grid
+  host: "smtp.sendgrid.net",
+  port: 465,
+  auth: {
+    user: "apikey",
+    pass: "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",
+  },
 
-    //Gmail
-    // service : 'Gmail',
-    // auth : {
-    //     user : 'ahmedrashad13281@gmail.com',
-    //     pass : '130130Bb!',
-        
-    // }
-
-    //SendGrid
-    host : 'smtp.sendgrid.net',
-    port : 587,
-    auth : {
-        user : process.env.SENDGRID_USER,
-        pass : process.env.SENDGRID_PASS
-    }
+  //ZOHO
+//   host: "smtp.zoho.com",
+//   port: 465,
+//   secure: true,
+//   auth: {
+//     user: "ahmedrashad13281@zohomail.com",
+//     pass: "130130Bb!",
+//   },
 });
 
-module.exports = transporter
+module.exports = transporter;
