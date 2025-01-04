@@ -129,14 +129,15 @@ exports.resetPassword = async (body, token) => {
 };
 
 exports.updateProfile = async (user, body) => {
-  const filteredData = filterReqBody(body, ["bio", "username" , "profilePicture"]);
-  const imgUrl = await uploadToFirebase(body.profilePicture)
-  console.log(imgUrl);
-  // const updateUser = await UserModel.findOneAndUpdate(
-  //   user?._id,
-  //   { $set: filteredData },
-  //   { runValidators: true, new: true }
-  // );
+  const filteredData = filterReqBody(body, ["bio", "username"]);
+  //const imgUrl = await uploadToFirebase(body.profilePicture)
+  //console.log(imgUrl);
 
-  return filteredData;
+  const updateUser = await UserModel.findOneAndUpdate(
+    user?._id,
+    { $set: filteredData },
+    { runValidators: true, new: true }
+  );
+
+  return updateUser;
 };
