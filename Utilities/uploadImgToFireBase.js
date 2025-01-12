@@ -22,14 +22,13 @@ const uploadToFirebase = async (image) => {
     const storageRef = ref(storage, `photos/${image.originalname}`);
 
     const snapshot = await uploadBytesResumable(storageRef, image.buffer);
-    console.log("Snapshot object keys:", Object.keys(snapshot || {}));
 
     const URL = await getDownloadURL(snapshot.ref);
 
     return URL;
   } catch (err) {
     console.log(err);
-    //return new AppErrorHandler(err.message , 404)
+    return new AppErrorHandler(err.message , 404)
   }
 };
 

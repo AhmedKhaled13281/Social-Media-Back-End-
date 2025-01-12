@@ -17,8 +17,8 @@ const multerStorage = multer.diskStorage({
 });
 
 const upload = multer({
-  storage: multerStorage,
-  //storage : multer.memoryStorage(),
+  //storage: multerStorage,
+  storage : multer.memoryStorage(),
   fileFilter: function (req, file, cb) {
     if (file.mimetype.startsWith("image/")) {
       cb(null, true);
@@ -89,7 +89,6 @@ exports.resetPassword = async (req, res, next) => {
   res.status(200).json({ token: jwtToken });
 };
 
-// TODO
 exports.updateProfile = async (req, res, next) => {
   const userData = req.user;
   let body = req.body;
