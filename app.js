@@ -2,12 +2,13 @@ const express = require("express")
 const app = express()
 const AppErrorHandler = require('./Utilities/appErrorHandler')
 const UserRoute = require("./Routes/user.route")
-
+const PostRoute = require("./Routes/post.route")
 
 // Middleware and routes
 app.use(express.json());
 
 app.use("/user" , UserRoute)
+app.use("/post" , PostRoute)
 // app.get('/', (req, res) => {
 //     console.log("object");
 //     res.status(200).json({message : "Cdvf"})
