@@ -4,7 +4,7 @@ const {
   uploadBytesResumable,
   deleteObject,
 } = require("firebase/storage");
-const AppErrorHandler = require("../Utilities/appErrorHandler")
+const AppErrorHandler = require("../Utilities/appErrorHandler");
 
 const storage = require("../Config/firebase.config");
 
@@ -19,16 +19,29 @@ const uploadToFirebase = async (image) => {
 
     const dateTime = new Date();
 
-    const storageRef = ref(storage, `photos/${image.originalname}`);
+    if (Array.isArray(image)) {
+      let imgUrls = [];
+      for (let img of image) {
+        const storageRef = ref(storage, `photos/${img.originalname}`);
 
-    const snapshot = await uploadBytesResumable(storageRef, image.buffer);
+        const snapshot = await uploadBytesResumable(storageRef, img.buffer);
 
-    const URL = await getDownloadURL(snapshot.ref);
+        const URL = await getDownloadURL(snapshot.ref);
+        imgUrls.push(URL);
+      }
+      return imgUrls;
+    } else {
+      const storageRef = ref(storage, `photos/${image.originalname}`);
 
-    return URL;
+      const snapshot = await uploadBytesResumable(storageRef, image.buffer);
+
+      const URL = await getDownloadURL(snapshot.ref);
+
+      return URL;
+    }
   } catch (err) {
     console.log(err);
-    return new AppErrorHandler(err.message , 404)
+    return new AppErrorHandler(err.message, 404);
   }
 };
 

@@ -123,3 +123,14 @@ exports.updateProfile = async (req, res, next) => {
 
   res.status(200).json({ updatedUser: user, message: "Updated Successfully!" });
 };
+
+exports.getUserData = async (req , res , next) => {
+  const {id} = req.params
+  const user = await userService.getUserData(id)
+
+  if(user.status) {
+    res.status(user.statusCode).json({ message: user.message });
+  }
+
+  res.status(200).json(user)
+}

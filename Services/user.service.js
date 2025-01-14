@@ -141,3 +141,13 @@ exports.updateProfile = async (user, body) => {
 
   return updateUser;
 };
+
+exports.getUserData = async (userId) => {
+  const user = await UserModel.findOne({_id : userId})
+
+  if(!user) {
+    return new AppErrorHandler(`No User Found With This ID : ${userId}` , 404)
+  }
+
+  return user
+}
