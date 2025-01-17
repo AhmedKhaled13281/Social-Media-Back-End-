@@ -18,8 +18,12 @@ router
   .get(userController.isAuthorized, catchAsync(postController.getUserPosts));
 
 router
-  .route("/postId")
-  .patch(userController.isAuthorized, catchAsync(postController.updatePost));
-
+  .route("/:postId")
+  .patch(
+    userController.isAuthorized,
+    postController.uploadController,
+    catchAsync(postController.updatePost)
+  )
+  .delete(userController.isAuthorized, catchAsync(postController.deletePost));
 
 module.exports = router;

@@ -29,6 +29,7 @@ const uploadToFirebase = async (image) => {
         const URL = await getDownloadURL(snapshot.ref);
         imgUrls.push(URL);
       }
+
       return imgUrls;
     } else {
       const storageRef = ref(storage, `photos/${image.originalname}`);

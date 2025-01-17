@@ -70,17 +70,31 @@ exports.getUserPosts = async (req, res, next) => {
     res.status(userPosts.statusCode).json({ message: userPosts.message });
   }
 
-  res.status(200).json(userPosts)
+  res.status(200).json(userPosts);
+};
+
+exports.updatePost = async (req, res, next) => {
+  const { postId } = req.params;
+  const photos = req.files;
+  const body = { ...(photos.length && { photos }), ...req.body };
+
+  const post = await postService.updatePost(postId, body);
+
+  if (post.status) {
+    res.status(post.statusCode).json({ message: post.message });
+  }
+
+  res.status(200).json(post);
 };
 
 // TODO
-exports.updatePost = async (req , res , next) => {
-    const {postId} = req.params
-    const post = await postService.updatePost({_id : postId , data : req.body})
+exports.deletePost = async (req , res, next) => {
+  const {postId} = req.params
+  const post = await postService.deletePost(postId)
 
-    if(post.status) {
-        res.status(post.statusCode).json({message : post.message})
-    }
+  if(post.status) {
+    res.status(post.statusCode).json({message : post.message})
+  }
 
-    res.status(200).json(post)
+  res.status(200).json({message : "Post Deleted Successfully!"})
 }
