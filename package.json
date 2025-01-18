@@ -4,16 +4,20 @@
   "description": "Social Media App Back-End",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "mocha"
   },
   "author": "Ahmed Khaled",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "firebase": "^11.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mocha": "^11.0.1",
     "mongodb": "^6.11.0",
     "mongoose": "^8.8.4",
     "multer": "^1.4.5-lts.1",

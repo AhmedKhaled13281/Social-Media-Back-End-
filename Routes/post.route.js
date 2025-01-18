@@ -19,11 +19,12 @@ router
 
 router
   .route("/:postId")
+  .delete(userController.isAuthorized, catchAsync(postController.deletePost))
   .patch(
     userController.isAuthorized,
     postController.uploadController,
     catchAsync(postController.updatePost)
   )
-  .delete(userController.isAuthorized, catchAsync(postController.deletePost));
+
 
 module.exports = router;

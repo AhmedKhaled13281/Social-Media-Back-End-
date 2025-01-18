@@ -88,13 +88,32 @@ exports.updatePost = async (req, res, next) => {
 };
 
 // TODO
-exports.deletePost = async (req , res, next) => {
-  const {postId} = req.params
-  const post = await postService.deletePost(postId)
+exports.deletePost = async (req, res, next) => {
+  const { postId } = req.params;
+  const post = await postService.deletePost(postId);
 
-  if(post.status) {
-    res.status(post.statusCode).json({message : post.message})
+
+  if (post.status) {
+    logger.logger.error(`Post is not found! : ${post}`);
+    logAudit({
+      action: "DELETE Post",
+      data: post,
+      status: "FAILED",
+      error: post.message,
+      by: req.user?._id,
+      ip: req.ip,
+    });
+    res.status(post.statusCode).json({ message: post.message });
+  } else {
+    logger.logger.info(`Post has been Deleted : ${post}`);
+    logAudit({
+      action: "Delete Post",
+      data: post,
+      status: "SUCCESS",
+      error: null,
+      by: req.user?._id,
+      ip: req.ip,
+    });
+    res.status(200).json({ message: "Post Deleted Successfully!" });
   }
-
-  res.status(200).json({message : "Post Deleted Successfully!"})
-}
+};

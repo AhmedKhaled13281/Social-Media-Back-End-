@@ -82,7 +82,7 @@ exports.updatePost = async (postId, data) => {
 exports.deletePost = async (postId) => {
   const post = await PostModel.deleteOne({_id : postId})
 
-  if(!post) {
+  if(!post || post.deletedCount == 0) {
     return new AppErrorHandler("No Post Found!" , 404)
   }
 
