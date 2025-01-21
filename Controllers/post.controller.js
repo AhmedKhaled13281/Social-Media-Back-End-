@@ -35,19 +35,20 @@ exports.getPosts = async (req, res, next) => {
 exports.createPost = async (req, res, next) => {
   const photos = req.files;
   const body = { photos, ...req.body };
+
   const post = await postService.createPost(body, req.user);
 
   if (post.status) {
     logger.logger.error(post.message);
     logAudit({
       action: "Create Post",
-      data: req.body,
+      data: body,
       status: "FAILED",
       error: post.message,
       by: req.user?._id,
       ip: req.ip,
     });
-    res.status(post.statusCode).json({ message: post.message });
+    return res.status(post.statusCode).json({ message: post.message });
   }
 
   logger.logger.info(`Post has been Created : ${post}`);
@@ -75,25 +76,43 @@ exports.getUserPosts = async (req, res, next) => {
 
 exports.updatePost = async (req, res, next) => {
   const { postId } = req.params;
-  const photos = req.files;
-  const body = { ...(photos.length && { photos }), ...req.body };
+  const photos = req?.files;
+  const body = { ...(photos?.length && { photos }), ...req.body };
 
   const post = await postService.updatePost(postId, body);
 
-  if (post.status) {
-    res.status(post.statusCode).json({ message: post.message });
+  if (post.status || !body) {
+    logger.logger.error(post.message);
+    logAudit({
+      action: "Update Post",
+      data: body,
+      status: "FAILED",
+      error: post.message,
+      by: req.user?._id,
+      ip: req.ip,
+    });
+    return res.status(post.statusCode).json({ message: post.message });
   }
+
+  logger.logger.info(`Post has been Updated : ${post}`);
+  logAudit({
+    action: "Update Post",
+    data: post,
+    status: "SUCCESS",
+    error: null,
+    by: req.user?._id,
+    ip: req.ip,
+  });
 
   res.status(200).json(post);
 };
 
-// TODO
 exports.deletePost = async (req, res, next) => {
   const { postId } = req.params;
   const post = await postService.deletePost(postId);
 
 
-  if (post.status) {
+  if (post.status || !postId) {
     logger.logger.error(`Post is not found! : ${post}`);
     logAudit({
       action: "DELETE Post",

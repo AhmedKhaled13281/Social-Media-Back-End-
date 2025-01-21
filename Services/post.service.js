@@ -78,7 +78,6 @@ exports.updatePost = async (postId, data) => {
   return updatedPost;
 };
 
-// TODO
 exports.deletePost = async (postId) => {
   const post = await PostModel.deleteOne({_id : postId})
 
