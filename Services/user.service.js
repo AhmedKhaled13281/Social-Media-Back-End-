@@ -12,7 +12,7 @@ exports.createToken = (data, res) => {
   res.cookie("jwt", token, {
     httpOnly: true,
     secure: true,
-    exp: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+    exp: new Date(Date.now() + (3 * 24 * 60 * 60 * 1000)),
   });
 
   return token;
