@@ -7,7 +7,7 @@ const filterReqBody = require("../Utilities/filterReqBody");
 const uploadToFirebase = require("../Utilities/uploadImgToFireBase")
 
 exports.createToken = (data, res) => {
-  const token = jwt.sign({ data }, process.env.JWT_SECERT, { expiresIn: "1h" });
+  const token = jwt.sign({ data }, process.env.JWT_SECERT, { expiresIn: "3d" });
 
   res.cookie("jwt", token, {
     httpOnly: true,
